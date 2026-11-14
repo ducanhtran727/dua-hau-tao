@@ -10,6 +10,7 @@ const packages = {
 };
 
 function doPost(event) {
+  const orderedAt = new Date();
   const data = event.parameter;
   const name = (data.full_name || "").trim();
   const phone = (data.phone_number || "").trim();
@@ -25,12 +26,22 @@ function doPost(event) {
   try {
     const spreadsheet = SpreadsheetApp.openById(spreadsheetId);
     const sheet = spreadsheet.getSheetByName(orderSheetName) || spreadsheet.insertSheet(orderSheetName);
-    if (sheet.getLastRow() === 0) {
-      sheet.appendRow(["Họ tên", "Số điện thoại", "Địa chỉ", "Gói mua"]);
+    const lastRow = sheet.getLastRow();
+    const timeHeader = "Thời gian đặt";
+    if (lastRow === 0) {
+      sheet.appendRow(["Họ tên", "Số điện thoại", "Địa chỉ", "Gói mua", timeHeader]);
+    } else {
+      const header = sheet.getRange(1, 5);
+      const previousHeader = header.getValue();
+      if (previousHeader && previousHeader !== timeHeader) {
+        throw new Error("Column E is already in use");
+      }
+      if (!previousHeader) header.setValue(timeHeader);
     }
-    const row = sheet.getRange(sheet.getLastRow() + 1, 1, 1, 4);
+    const orderTime = Utilities.formatDate(orderedAt, "Asia/Ho_Chi_Minh", "yyyy-MM-dd HH:mm:ss");
+    const row = sheet.getRange(Math.max(lastRow, 1) + 1, 1, 1, 5);
     row.setNumberFormat("@");
-    row.setValues([[name, phone, address, packages[packageId]].map(asSheetText)]);
+    row.setValues([[name, phone, address, packages[packageId], orderTime].map(asSheetText)]);
     SpreadsheetApp.flush();
     return orderResponse(true);
   } catch (error) {
