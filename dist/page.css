@@ -13,6 +13,14 @@ html, body {
   zoom: var(--page-scale);
 }
 
+#w-l6jkffn0 {
+  height: 362px;
+}
+
+#w-l6jkffn0 .section-container > :not(#w-oadm89zh, #w-j9lzvbe9) {
+  translate: 0 -36px;
+}
+
 body {
   padding-bottom: calc(136px + env(safe-area-inset-bottom, 0px));
 }
