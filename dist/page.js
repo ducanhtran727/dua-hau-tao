@@ -146,8 +146,10 @@ orderForm.addEventListener("submit", async (event) => {
   }
 
   orderSubmit.disabled = true;
+  const submitLabel = orderSubmit.textContent;
+  orderSubmit.textContent = "ĐANG GỬI…";
   orderForm.setAttribute("aria-busy", "true");
-  showOrderResult("Đang gửi đơn hàng…");
+  orderResult.hidden = true;
   try {
     const response = await fetch(orderScriptUrl, { method: "POST", body: order });
     if (!response.ok || (await response.json()).ok !== true) {
@@ -159,6 +161,7 @@ orderForm.addEventListener("submit", async (event) => {
   } catch {
     showOrderResult("Chưa xác nhận được đơn hàng. Vui lòng kiểm tra kết nối hoặc thử lại.");
   } finally {
+    orderSubmit.textContent = submitLabel;
     orderSubmit.disabled = false;
     orderForm.removeAttribute("aria-busy");
   }
