@@ -14,7 +14,7 @@ html, body {
 }
 
 body {
-  padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(136px + env(safe-area-inset-bottom, 0px));
 }
 
 #w-sylie3ex {
@@ -48,21 +48,37 @@ body {
 }
 
 .offer-countdown {
+  margin-bottom: 8px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #ff665d;
+  color: #251513;
+  font: 400 14px/22px Roboto, sans-serif;
+}
+
+.offer-countdown strong {
+  display: block;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.offer-countdown strong span {
+  margin-right: 3px;
+  font-size: 23px;
+}
+
+.offer-clock {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 8px;
-  margin-bottom: 6px;
-  color: #173b21;
-  font: 700 13px/20px Roboto, sans-serif;
 }
 
 .offer-countdown time {
-  padding-inline: 7px;
-  border-radius: 5px;
-  background: #fff;
-  color: #be1310;
+  color: #251513;
+  font-size: 20px;
+  font-weight: 900;
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
   white-space: nowrap;
 }
 
