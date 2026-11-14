@@ -1,3 +1,6 @@
+// Paste the Google Apps Script Web App URL ending in /exec here.
+const orderScriptUrl = "";
+
 const page = document.querySelector(".pageview");
 
 function resizePage() {
@@ -83,9 +86,10 @@ selectImage(0);
 const orderDialog = document.querySelector(".order-dialog");
 const orderForm = orderDialog.querySelector("form");
 const orderResult = orderForm.querySelector(".order-result");
+const orderSubmit = orderForm.querySelector('[type="submit"]');
 
 function openOrder() {
-  orderResult.hidden = true;
+  if (!orderSubmit.disabled) orderResult.hidden = true;
   orderDialog.showModal();
 }
 
@@ -112,9 +116,48 @@ for (const id of ["rojvvtdw", "llc44l7n"]) {
 }
 
 orderDialog.querySelector(".order-close").addEventListener("click", () => orderDialog.close());
-orderForm.addEventListener("input", () => { orderResult.hidden = true; });
-orderForm.addEventListener("submit", (event) => {
-  event.preventDefault();
+function showOrderResult(message) {
+  orderResult.textContent = message;
   orderResult.hidden = false;
-  orderResult.scrollIntoView({ block: "nearest" });
+  if (orderDialog.open) orderResult.scrollIntoView({ block: "nearest" });
+}
+
+orderForm.addEventListener("input", () => {
+  if (!orderSubmit.disabled) orderResult.hidden = true;
+});
+orderForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (orderSubmit.disabled) return;
+  if (!orderScriptUrl.trim()) {
+    showOrderResult("Trang chưa kết nối hệ thống nhận đơn.");
+    return;
+  }
+
+  const formData = new FormData(orderForm);
+  const order = new URLSearchParams();
+  for (const field of ["full_name", "phone_number", "address", "package"]) {
+    const value = String(formData.get(field) ?? "").trim();
+    if (!value) {
+      showOrderResult("Vui lòng điền đầy đủ thông tin và chọn gói mua.");
+      return;
+    }
+    order.set(field, value);
+  }
+
+  orderSubmit.disabled = true;
+  orderForm.setAttribute("aria-busy", "true");
+  showOrderResult("Đang gửi đơn hàng…");
+  try {
+    const response = await fetch(orderScriptUrl, { method: "POST", body: order });
+    if (!response.ok || (await response.json()).ok !== true) {
+      throw new Error("Order was not confirmed");
+    }
+    orderForm.reset();
+    showOrderResult("Đặt hàng thành công!");
+  } catch {
+    showOrderResult("Chưa xác nhận được đơn hàng. Vui lòng kiểm tra kết nối hoặc thử lại.");
+  } finally {
+    orderSubmit.disabled = false;
+    orderForm.removeAttribute("aria-busy");
+  }
 });
