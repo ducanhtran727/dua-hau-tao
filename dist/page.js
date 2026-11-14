@@ -92,7 +92,7 @@ function openOrder() {
 document.querySelector("[data-open-order]").addEventListener("click", openOrder);
 
 const offerTimer = document.querySelector(".offer-countdown time");
-const offerDuration = 300;
+const offerDuration = 30 * 60;
 const offerStarted = Date.now();
 
 function updateOfferTimer() {
