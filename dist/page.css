@@ -9,7 +9,14 @@ html, body {
 
 .pageview {
   width: 420px;
+  margin-inline: auto;
   zoom: var(--page-scale);
+}
+
+#w-rdrgi7ww {
+  right: auto;
+  left: 50%;
+  translate: -50% 0;
 }
 
 .pageview [role="button"] {
