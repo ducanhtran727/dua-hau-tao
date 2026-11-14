@@ -89,7 +89,7 @@ function openOrder() {
   orderDialog.showModal();
 }
 
-page.querySelector("[data-open-order]").addEventListener("click", openOrder);
+document.querySelector("[data-open-order]").addEventListener("click", openOrder);
 for (const id of ["rojvvtdw", "llc44l7n"]) {
   activate(document.getElementById("w-" + id), openOrder);
 }

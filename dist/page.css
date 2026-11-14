@@ -13,14 +13,38 @@ html, body {
   zoom: var(--page-scale);
 }
 
+body {
+  padding-bottom: calc(62px + env(safe-area-inset-bottom, 0px));
+}
+
+#w-sylie3ex {
+  height: 1011px;
+}
+
+#w-sylie3ex .section-container {
+  top: -24.444px;
+}
+
+#w-4pzxjldl,
+#w-atven2hk,
+#w-w6z2x7sf {
+  translate: 0 -60px;
+}
+
 .primary-order {
-  position: absolute;
-  top: 755px;
-  left: 0;
-  width: 100%;
-  padding: 9px 16px;
+  position: fixed;
+  inset: auto 0 0;
+  width: min(420px, 100%);
+  margin-inline: auto;
+  padding: 8px 16px calc(9px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid #c8d8b7;
   background: #f2f6e9;
-  z-index: 1;
+  z-index: 20;
+}
+
+.primary-order :focus-visible {
+  outline: 2px solid #365e37;
+  outline-offset: 2px;
 }
 
 .order-button {
