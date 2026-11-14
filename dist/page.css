@@ -14,7 +14,7 @@ html, body {
 }
 
 body {
-  padding-bottom: calc(62px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
 }
 
 #w-sylie3ex {
@@ -45,6 +45,25 @@ body {
 .primary-order :focus-visible {
   outline: 2px solid #365e37;
   outline-offset: 2px;
+}
+
+.offer-countdown {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+  color: #173b21;
+  font: 700 13px/20px Roboto, sans-serif;
+}
+
+.offer-countdown time {
+  padding-inline: 7px;
+  border-radius: 5px;
+  background: #fff;
+  color: #be1310;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .order-button {

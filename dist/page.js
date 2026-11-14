@@ -90,6 +90,23 @@ function openOrder() {
 }
 
 document.querySelector("[data-open-order]").addEventListener("click", openOrder);
+
+const offerTimer = document.querySelector(".offer-countdown time");
+const offerDuration = 300;
+const offerStarted = Date.now();
+
+function updateOfferTimer() {
+  const elapsed = Math.floor((Date.now() - offerStarted) / 1000);
+  const remaining = offerDuration - (elapsed % offerDuration);
+  const minutes = Math.floor(remaining / 60);
+  const seconds = remaining % 60;
+  offerTimer.dateTime = `PT${minutes}M${seconds}S`;
+  offerTimer.textContent = [minutes, seconds].map((part) => String(part).padStart(2, "0")).join(":");
+}
+
+updateOfferTimer();
+setInterval(updateOfferTimer, 1000);
+
 for (const id of ["rojvvtdw", "llc44l7n"]) {
   activate(document.getElementById("w-" + id), openOrder);
 }
