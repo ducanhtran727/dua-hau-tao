@@ -137,6 +137,20 @@ body {
   background: rgb(16 25 13 / 64%);
 }
 
+.order-thanks {
+  padding: 24px;
+  text-align: center;
+}
+
+.order-thanks h2 {
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.order-thanks p {
+  margin: 8px 0 18px;
+}
+
 .order-header {
   display: flex;
   align-items: center;

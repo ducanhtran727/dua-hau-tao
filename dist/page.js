@@ -1,5 +1,5 @@
 // Paste the Google Apps Script Web App URL ending in /exec here.
-const orderScriptUrl = "";
+const orderScriptUrl = "https://script.google.com/macros/s/AKfycbyFoQvVbhUtcv-HdHed-dXLupMmcDtiMrQFw1ll5DlUo4b0II5pgVAiEROi_HbiGlbJ/exec";
 
 const page = document.querySelector(".pageview");
 
@@ -84,6 +84,7 @@ galleryView.addEventListener("touchend", (event) => {
 selectImage(0);
 
 const orderDialog = document.querySelector(".order-dialog");
+const orderThanks = document.querySelector(".order-thanks");
 const orderForm = orderDialog.querySelector("form");
 const orderResult = orderForm.querySelector(".order-result");
 const orderSubmit = orderForm.querySelector('[type="submit"]');
@@ -153,7 +154,8 @@ orderForm.addEventListener("submit", async (event) => {
       throw new Error("Order was not confirmed");
     }
     orderForm.reset();
-    showOrderResult("Đặt hàng thành công!");
+    orderDialog.close();
+    orderThanks.showModal();
   } catch {
     showOrderResult("Chưa xác nhận được đơn hàng. Vui lòng kiểm tra kết nối hoặc thử lại.");
   } finally {
