@@ -1,5 +1,5 @@
 // Paste the Google Apps Script Web App URL ending in /exec here.
-const orderScriptUrl = "https://script.google.com/macros/s/AKfycbyFoQvVbhUtcv-HdHed-dXLupMmcDtiMrQFw1ll5DlUo4b0II5pgVAiEROi_HbiGlbJ/exec";
+const orderScriptUrl = "https://script.google.com/macros/s/AKfycbx9wiKy0_3cfuwuNxf6xCZ3ku5ASvYuXGuXoLgNcJkeAPGkEAhnBngcO-Ajx6aF9g7X/exec";
 
 const page = document.querySelector(".pageview");
 
