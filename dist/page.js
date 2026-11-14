@@ -22,10 +22,6 @@ function activate(element, handler, label) {
 }
 
 const scrollTargets = {
-  rdrgi7ww: "kmezwmaz",
-  gqx27e8z: "kmezwmaz",
-  rojvvtdw: "kmezwmaz",
-  llc44l7n: "kmezwmaz",
   "44gmw9eu": "wle3l5cp",
   "45eavcqz": "wle3l5cp",
   eyq2hqh0: "wle3l5cp",
@@ -84,37 +80,24 @@ galleryView.addEventListener("touchend", (event) => {
 }, { passive: true });
 selectImage(0);
 
-const countdownDuration = 300;
-const countdownStarted = Date.now();
-const countdowns = page.querySelectorAll(".com-countdown");
+const orderDialog = document.querySelector(".order-dialog");
+const orderForm = orderDialog.querySelector("form");
+const orderResult = orderForm.querySelector(".order-result");
 
-function renderCountdown() {
-  const elapsed = Math.floor((Date.now() - countdownStarted) / 1000);
-  const remaining = countdownDuration - (elapsed % countdownDuration);
-  for (const countdown of countdowns) {
-    countdown.querySelector(".countdown-item-minute > div").textContent = String(Math.floor(remaining / 60)).padStart(2, "0");
-    countdown.querySelector(".countdown-item-second > div").textContent = String(remaining % 60).padStart(2, "0");
-  }
+function openOrder() {
+  orderResult.hidden = true;
+  orderDialog.showModal();
 }
 
-renderCountdown();
-setInterval(renderCountdown, 1000);
-
-const notice = document.createElement("dialog");
-notice.className = "order-notice";
-notice.setAttribute("aria-labelledby", "order-notice-title");
-notice.innerHTML = `
-  <h2 id="order-notice-title">Biểu mẫu xem thử</h2>
-  <p>Thông tin hợp lệ. Trang này chưa kết nối hệ thống nhận đơn nên đơn hàng chưa được gửi.</p>
-  <button type="button">Đóng</button>
-`;
-document.body.append(notice);
-notice.querySelector("button").addEventListener("click", () => notice.close());
-
-for (const form of page.querySelectorAll("form")) {
-  activate(form.querySelector(".com-button"), () => form.requestSubmit());
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    notice.showModal();
-  });
+page.querySelector("[data-open-order]").addEventListener("click", openOrder);
+for (const id of ["rojvvtdw", "llc44l7n"]) {
+  activate(document.getElementById("w-" + id), openOrder);
 }
+
+orderDialog.querySelector(".order-close").addEventListener("click", () => orderDialog.close());
+orderForm.addEventListener("input", () => { orderResult.hidden = true; });
+orderForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  orderResult.hidden = false;
+  orderResult.scrollIntoView({ block: "nearest" });
+});
