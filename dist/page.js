@@ -1,5 +1,6 @@
 // Paste the Google Apps Script Web App URL ending in /exec here.
-const orderScriptUrl = "https://script.google.com/macros/s/AKfycbx9wiKy0_3cfuwuNxf6xCZ3ku5ASvYuXGuXoLgNcJkeAPGkEAhnBngcO-Ajx6aF9g7X/exec";
+const orderScriptUrl =
+  "https://script.google.com/macros/s/AKfycbx9wiKy0_3cfuwuNxf6xCZ3ku5ASvYuXGuXoLgNcJkeAPGkEAhnBngcO-Ajx6aF9g7X/exec";
 
 const page = document.querySelector(".pageview");
 
@@ -38,7 +39,9 @@ for (const [buttonId, targetId] of Object.entries(scrollTargets)) {
     const top = target.getBoundingClientRect().top + window.scrollY - 60;
     window.scrollTo({
       top,
-      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
     });
   });
 }
@@ -46,7 +49,9 @@ for (const [buttonId, targetId] of Object.entries(scrollTargets)) {
 const gallery = page.querySelector(".com-gallery");
 const galleryView = gallery.querySelector(".gallery-view");
 const slides = Array.from(gallery.querySelectorAll(".gallery-view-item"));
-const thumbnails = Array.from(gallery.querySelectorAll(".gallery-controls-item"));
+const thumbnails = Array.from(
+  gallery.querySelectorAll(".gallery-controls-item"),
+);
 const thumbnailScroller = gallery.querySelector(".gallery-scroll");
 let currentImage = 0;
 
@@ -62,25 +67,45 @@ function selectImage(index) {
     thumbnail.setAttribute("aria-pressed", String(position === currentImage));
   });
   const thumbnail = thumbnails[currentImage];
-  thumbnailScroller.scrollLeft = thumbnail.offsetLeft - thumbnailScroller.clientWidth / 2 + thumbnail.offsetWidth / 2;
+  thumbnailScroller.scrollLeft =
+    thumbnail.offsetLeft -
+    thumbnailScroller.clientWidth / 2 +
+    thumbnail.offsetWidth / 2;
 }
 
 thumbnails.forEach((thumbnail, index) => {
   activate(thumbnail, () => selectImage(index), `Xem ảnh ${index + 1}`);
 });
 for (const section of ["view", "controls"]) {
-  activate(gallery.querySelector(`.gallery-${section}-icon-next`), () => selectImage(currentImage + 1), "Ảnh tiếp theo");
-  activate(gallery.querySelector(`.gallery-${section}-icon-prev`), () => selectImage(currentImage - 1), "Ảnh trước");
+  activate(
+    gallery.querySelector(`.gallery-${section}-icon-next`),
+    () => selectImage(currentImage + 1),
+    "Ảnh tiếp theo",
+  );
+  activate(
+    gallery.querySelector(`.gallery-${section}-icon-prev`),
+    () => selectImage(currentImage - 1),
+    "Ảnh trước",
+  );
 }
 
 let touchStart;
-galleryView.addEventListener("touchstart", (event) => {
-  touchStart = event.changedTouches[0].clientX;
-}, { passive: true });
-galleryView.addEventListener("touchend", (event) => {
-  const distance = event.changedTouches[0].clientX - touchStart;
-  if (Math.abs(distance) > 35) selectImage(currentImage + (distance < 0 ? 1 : -1));
-}, { passive: true });
+galleryView.addEventListener(
+  "touchstart",
+  (event) => {
+    touchStart = event.changedTouches[0].clientX;
+  },
+  { passive: true },
+);
+galleryView.addEventListener(
+  "touchend",
+  (event) => {
+    const distance = event.changedTouches[0].clientX - touchStart;
+    if (Math.abs(distance) > 35)
+      selectImage(currentImage + (distance < 0 ? 1 : -1));
+  },
+  { passive: true },
+);
 selectImage(0);
 
 const orderDialog = document.querySelector(".order-dialog");
@@ -94,7 +119,9 @@ function openOrder() {
   orderDialog.showModal();
 }
 
-document.querySelector("[data-open-order]").addEventListener("click", openOrder);
+document
+  .querySelector("[data-open-order]")
+  .addEventListener("click", openOrder);
 
 const offerTimer = document.querySelector(".offer-countdown time");
 const offerDuration = 30 * 60;
@@ -106,7 +133,9 @@ function updateOfferTimer() {
   const minutes = Math.floor(remaining / 60);
   const seconds = remaining % 60;
   offerTimer.dateTime = `PT${minutes}M${seconds}S`;
-  offerTimer.textContent = [minutes, seconds].map((part) => String(part).padStart(2, "0")).join(":");
+  offerTimer.textContent = [minutes, seconds]
+    .map((part) => String(part).padStart(2, "0"))
+    .join(":");
 }
 
 updateOfferTimer();
@@ -116,7 +145,9 @@ for (const id of ["rojvvtdw", "llc44l7n"]) {
   activate(document.getElementById("w-" + id), openOrder);
 }
 
-orderDialog.querySelector(".order-close").addEventListener("click", () => orderDialog.close());
+orderDialog
+  .querySelector(".order-close")
+  .addEventListener("click", () => orderDialog.close());
 function showOrderResult(message) {
   orderResult.textContent = message;
   orderResult.hidden = false;
@@ -128,6 +159,7 @@ orderForm.addEventListener("input", () => {
 });
 orderForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (typeof fbq === "function") fbq("track", "InitiateCheckout");
   if (orderSubmit.disabled) return;
   if (!orderScriptUrl.trim()) {
     showOrderResult("Trang chưa kết nối hệ thống nhận đơn.");
@@ -151,15 +183,25 @@ orderForm.addEventListener("submit", async (event) => {
   orderForm.setAttribute("aria-busy", "true");
   orderResult.hidden = true;
   try {
-    const response = await fetch(orderScriptUrl, { method: "POST", body: order });
+    const response = await fetch(orderScriptUrl, {
+      method: "POST",
+      body: order,
+    });
     if (!response.ok || (await response.json()).ok !== true) {
       throw new Error("Order was not confirmed");
     }
+    if (typeof fbq === "function")
+      fbq("track", "Purchase", {
+        value: 99000,
+        currency: "VND",
+      });
     orderForm.reset();
     orderDialog.close();
     orderThanks.showModal();
   } catch {
-    showOrderResult("Chưa xác nhận được đơn hàng. Vui lòng kiểm tra kết nối hoặc thử lại.");
+    showOrderResult(
+      "Chưa xác nhận được đơn hàng. Vui lòng kiểm tra kết nối hoặc thử lại.",
+    );
   } finally {
     orderSubmit.textContent = submitLabel;
     orderSubmit.disabled = false;
