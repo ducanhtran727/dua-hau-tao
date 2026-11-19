@@ -7,6 +7,38 @@ html, body {
   --page-scale: 1;
 }
 
+#w-y723evnn {
+  top: 83px;
+  left: 8px;
+  width: 130px;
+  height: 24px;
+}
+
+#w-y723evnn .text-block-css {
+  font-size: 18px;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+#w-vxis1svz {
+  top: 112px;
+  left: 16px;
+}
+
+#w-44gmw9eu,
+#w-45eavcqz,
+#w-eyq2hqh0 {
+  top: 96px;
+  height: 30px;
+}
+
+#w-44gmw9eu .button-css,
+#w-45eavcqz .button-css,
+#w-eyq2hqh0 .button-css {
+  font-size: 12px;
+  border-radius: 4px;
+}
+
 .pageview {
   width: 420px;
   margin-inline: auto;
